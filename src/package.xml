@@ -78,14 +78,14 @@
 				</datafeed>
 
 				<datafeed
-					name="RandomSearchIters"
+					name="TuningIterations"
 					displayNames="Tuning Iterations"
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="TuningIterations" isSingleRow="True">
 							<column name="TuningIterationsID" dataType="Integer" isPrimary="True"/>
 							<column name="ScenarioID" dataType="Integer"/>
-							<column name="Number of Iterations" dataType="Integer" defaultValue="25"/>
+							<column name="nIterations" displayName="Number of Iterations" dataType="Integer" defaultValue="25"/>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -98,7 +98,7 @@
 						<datasheet name="TrainTestSplit" isSingleRow="True">
 							<column name="TrainTestSplitID" dataType="Integer" isPrimary="True"/>
 							<column name="ScenarioID" dataType="Integer"/>
-							<column name="Test Proportion" dataType="Double"/>
+							<column name="TestProp" displayName="Test Proportion" dataType="Double"/>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -124,8 +124,7 @@
 						<datasheet name="ModelPerformanceOverall" isSingleRow="True">
 							<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
 							<column name="ScenarioID" dataType="Integer"/>
-							<column name="MacroAccuracy" displayName="Macro Accuracy" dataType="Double"/>
-							<column name="WeightedAccuracy" displayName="Weighted Accuracy" dataType="Double"/>
+							<column name="Accuracy" displayName="Macro Accuracy" dataType="Double"/>
 							<column name="MacroPrecision" displayName="Macro Precision" dataType="Double"/>
 							<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
 							<column name="MacroRecall" displayName="Macro Recall" dataType="Double"/>

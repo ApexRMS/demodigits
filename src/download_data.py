@@ -1,7 +1,6 @@
 # Download data from GitHub, extract TIF files from data.tar.gz
 
 import pysyncrosim as ps
-import rasterio
 import pandas as pd
 import requests
 import tarfile
@@ -9,7 +8,7 @@ import os
 import io
 
 # Delete later:
-import tempfile
+# import tempfile
 
 # Get environment
 env = ps.environment._environment()
@@ -17,8 +16,6 @@ transfer_dir = env.transfer_directory
 
 # Get the Scenario that is currently being run
 my_scenario = ps.Scenario()
-
-# Get the input Datasheet?
 
 # Download TIF files and extract
 url = "https://raw.github.com/ApexRMS/demodigits/main/data.tar.gz"
@@ -32,10 +29,9 @@ with open(data, "wb") as f:
 url = "https://raw.github.com/ApexRMS/demodigits/main/target.csv"
 request = requests.get(url)
 target = pd.read_csv(io.StringIO(request.content.decode('utf-8')))
-target.target.iloc[0]
 
 # for testing, delete later:
-transfer_dir = tempfile.mkdtemp()
+# transfer_dir = tempfile.mkdtemp()
 
 # Initialize X, y 
 X = []
@@ -50,7 +46,8 @@ with tarfile.open(data, "r:gz") as tar:
         y.append(target.target.iloc[count])
         
 # Save X and y to an intermediate datasheet
-                
+input_df = pd.DataFrame({"X": X, "y": y})
+my_scenario.save_datasheet(name="InputData", data=input_df)            
             
     
 
