@@ -130,3 +130,6 @@ dmypy.json
 
 # data with all tif files
 /data/
+
+# visual studio
+*/.vs/
