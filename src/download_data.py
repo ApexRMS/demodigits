@@ -12,7 +12,8 @@ import io
 
 # Get environment
 env = ps.environment._environment()
-transfer_dir = env.transfer_directory
+temp_dir = ps.environment.runtime_temp_folder("tifs")
+#temp_dir = os.path.join(env.temp_directory.item(), "tifs")
 
 # Get the Scenario that is currently being run
 my_scenario = ps.Scenario()
@@ -39,15 +40,12 @@ y = []
 
 # Write data and targets to X, y
 with tarfile.open(data, "r:gz") as tar:
-    tar.extractall(path=transfer_dir)
-    extracted_imgs = os.listdir(transfer_dir)
+    tar.extractall(path=temp_dir)
+    extracted_imgs = os.listdir(temp_dir)
     for count, img in enumerate(extracted_imgs):
-        X.append(os.path.join(transfer_dir, img))
+        X.append(os.path.join(temp_dir, img))
         y.append(target.target.iloc[count])
         
 # Save X and y to an intermediate datasheet
 input_df = pd.DataFrame({"X": X, "y": y})
-my_scenario.save_datasheet(name="InputData", data=input_df)            
-            
-    
-
+my_scenario.save_datasheet(name="InputData", data=input_df)

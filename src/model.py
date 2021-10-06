@@ -22,27 +22,27 @@ from sklearn import metrics
 # Retrieve the Scenario that is currently running
 my_scenario = ps.Scenario()
 env = ps.environment._environment()
+temp_dir = ps.environment.runtime_temp_folder("tifs")
 
 # Load data from SyncroSim
 input_data = my_scenario.datasheets(name="InputData")
 
-# Create column for storing X values as arrays
-input_data["X_array"] = np.nan
-
 # Convert TIF files to numpy arrays using rasterio
+n_samples = len(input_data.y)
 for count, img in enumerate(input_data.X):
-    with rasterio.open(img, "r") as raster:
+    with rasterio.open(os.path.join(temp_dir, img), "r") as raster:
         values = raster.read()
-        if values.shape[0] == 1:
-            input_data.loc[count, "X_array"] = values[0]
-        else:
-            input_data.loc[count, "X_array"] = values
+        if count == 0:
+            X_array = np.empty((n_samples, values.shape[1] * values.shape[2]))
+        # Flatten values into 1D arrays
+        X_array[count] = values.reshape(-1)
             
 # Split into train and test data
 test_prop = my_scenario.datasheets(name="TrainTestSplit")
-X_train, X_test, y_train, y_test = train_test_split(input_data.X_array,
+test_prop = test_prop.TestProp.item()
+X_train, X_test, y_train, y_test = train_test_split(X_array,
                                                     input_data.y,
-                                                    test_size=test_prop.item(),
+                                                    test_size=test_prop,
                                                     shuffle=True)
 
 # =============================================================================
@@ -58,12 +58,15 @@ n_features = my_scenario.datasheets(name="NFeatures")
 max_depth = my_scenario.datasheets(name="MaxDepth")
 
 param_grid = {
-    "n_estimators": np.arange(n_estimators.Minimum, n_estimators.Maximum + 1,
-                              n_estimators.step),
-    "max_features": np.arange(n_features.Minimum, n_features.Maximum + 1,
-                              n_features.step),
-    "max_depth": np.arange(max_depth.Minimum, max_depth.Maximum + 1,
-                           max_depth.step)}
+    "n_estimators": np.arange(n_estimators.Minimum.item(),
+                              n_estimators.Maximum.item() + 1,
+                              n_estimators.Step.item()),
+    "max_features": np.arange(n_features.Minimum.item(),
+                              n_features.Maximum.item() + 1,
+                              n_features.Step.item()),
+    "max_depth": np.arange(max_depth.Minimum.item(),
+                           max_depth.Maximum.item() + 1,
+                           max_depth.Step.item())}
 
 # Perform hyperparameter search
 tune_iters = my_scenario.datasheets(name="TuningIterations")
@@ -97,6 +100,7 @@ model_report = pd.DataFrame(
 
 # Save the individual model performance to a SyncroSim Datasheet
 individual_report = model_report.iloc[:-3].reset_index()
+individual_report.support = individual_report.support.astype(int)
 individual_report.columns = ["TargetValue", "Precision", "Recall", "F1score",
                              "Support"]
 my_scenario.save_datasheet(name="ModelPerformanceIndividual", 
@@ -105,6 +109,7 @@ my_scenario.save_datasheet(name="ModelPerformanceIndividual",
 
 # Save the overall model performance to a SyncroSim Datasheet
 overall_performance = my_scenario.datasheets(name="ModelPerformanceOverall")
+overall_performance.loc[0] = np.nan
 overall_report = model_report.iloc[-3:]
 overall_performance.Accuracy = np.round(overall_report.loc["accuracy"][0], 3)
 overall_performance.MacroPrecision = np.round(
@@ -122,12 +127,13 @@ overall_performance.WeightedF1= np.round(
 
 # Generate a confusion matrix as a heatmap raster and save as an external file
 cm = metrics.confusion_matrix(y_test, y_pred)
-with rasterio.open(os.path.join(env.output_directory, "confusion_matrix.tif"),
+with rasterio.open(os.path.join(env.temp_directory.item(), "confusion_matrix.tif"),
                    mode="w", driver="GTiff", width=cm.shape[0],
                    height=cm.shape[1], count=1, 
-                   dtype=cm[0][0].dtype) as infile:
+                   dtype=np.int32) as infile:
     infile.write(cm, indexes=1)
-overall_performance.ConfusionMatrix = os.path.join(env.output_directory,
+
+overall_performance.ConfusionMatrix = os.path.join(env.temp_directory.item(),
                                                    "confusion_matrix.tif")
 
 # Save overall model performance Datasheet

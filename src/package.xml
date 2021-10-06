@@ -9,11 +9,59 @@
 			programArguments="download_data.py">
 
 			<include>
+				<transformer name="corestime_Runtime"/>
 				<transformer name="downloadData"/>
 				<transformer name="runModel"/>
 			</include>
 			
 			<datafeeds>
+				<datafeed name="RunControl" dataScope="Scenario">
+					<datasheets>
+						<datasheet name="RunControl" isSingleRow="True">
+							<columns>
+								<column name="RunControlID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column
+									name="MinimumIteration"
+									displayName="Minimum Iteration"
+									dataType="Integer"
+									defaultValue="1"
+									validationType="WholeNumber"
+									validationCondition="GreaterEqual"
+									formula1="1"
+									isVisible="False"/>
+								<column
+									name="MaximumIteration"
+									displayName="Number of Iterations"
+									dataType="Integer"
+									defaultValue="1"
+									validationType="WholeNumber"
+									validationCondition="GreaterEqual"
+									formula1="1"
+									isVisible="False"/>
+								<column
+									name="MinimumTimestep"
+									displayName="Minimum Timestep"
+									dataType="Integer"
+									defaultValue="0"
+									validationType="WholeNumber"
+									validationCondition="GreaterEqual"
+									formula1="0"
+									isVisible="False"/>
+								<column
+									name="MaximumTimestep"
+									displayName="Maximum Timestep"
+									dataType="Integer"
+									defaultValue="0"
+									validationType="WholeNumber"
+									validationCondition="GreaterEqual"
+									formula1="0"
+									isVisible="False"/>
+							</columns>
+						</datasheet>
+					</datasheets>
+				</datafeed>
+				
 				<datafeed
 					name="InputData"
 					displayName="Input Data"
@@ -135,7 +183,7 @@
 							<columns>
 								<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
 								<column name="ScenarioID" dataType="Integer"/>
-								<column name="Accuracy" displayName="Macro Accuracy" dataType="Double"/>
+								<column name="Accuracy" displayName="Accuracy" dataType="Double"/>
 								<column name="MacroPrecision" displayName="Macro Precision" dataType="Double"/>
 								<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
 								<column name="MacroRecall" displayName="Macro Recall" dataType="Double"/>
@@ -153,7 +201,8 @@
 									name="Band"
 									dataType="Integer"
 									allowDbNull="True"
-									isOptional="True"/>
+									isOptional="True"
+									isVisible="False"/>
 							</columns>
 						</datasheet>
 					</datasheets>
@@ -186,7 +235,8 @@
 			displayName="Download Data"
 			isRunnable="True"
 			programName="python"
-			programArguments="download_data.py">
+			programArguments="download_data.py"
+			configurationSheet="RunControl">
 			<pipeline>
 				<datafeed name="InputData" type="Output"/>
 			</pipeline>
@@ -197,7 +247,8 @@
 			displayName="Run Model"
 			isRunnable="True"
 			programName="python"
-			programArguments="model.py">
+			programArguments="model.py"
+			configurationSheet="RunControl">
 			<pipeline>
 				<datafeed name="InputData" type="Input"/>
 				<datafeed name="RFNEstimators" type="Input"/>
@@ -213,6 +264,11 @@
 		
 	</transformers>
 	<layouts>
+		
+		<!--Results Layout-->
+		<layout name="coreforms_ResultTransformers">
+			<item name="corestime_MapTransformer"/>
+		</layout>
 		
 		<!--Library Datafeeds Layout-->
 		<layout name="coreforms_LibraryDatafeeds">
@@ -238,6 +294,15 @@
 				<item name="ModelPerformanceIndividual" displayName="Model Performance Individual"/>
 			</group>
 			
+		</layout>
+		
+		<!--Map Layout-->
+		<layout name="corestimeforms_Maps" configurationSheet="RunControl">
+			<item 
+				name="ConfusionMatrix" 
+				displayName="Confusion Matrix" 
+				dataSheet="ModelPerformanceOVerall" 
+				column="ConfusionMatrix"/>
 		</layout>
 		
 	</layouts>
