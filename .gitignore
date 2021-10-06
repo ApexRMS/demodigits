@@ -133,3 +133,7 @@ dmypy.json
 
 # visual studio
 */.vs/
+
+# SyncroSim packages
+*/.metadata
+*.ssimpkg

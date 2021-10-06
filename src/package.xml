@@ -21,7 +21,7 @@
 					<datasheets>
 						<datasheet name="InputData">
 							<columns>
-								<column name="NEstimatorsID" dataType="Integer" isPrimary="True"/>
+								<column name="InputDataID" dataType="Integer" isPrimary="True"/>
 								<column name="ScenarioID" dataType="Integer"/>
 								<column name="X" dataType="String" isExternalFile="True" isRaster="True"/>
 								<column name="y" dataType="Integer"/>
@@ -53,11 +53,13 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="NFeatures" isSingleRow="True">
-							<column name="NFeaturesID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="Minimum" dataType="Integer" defaultValue="1"/>
-							<column name="Maximum" dataType="Integer" defaultValue="10"/>
-							<column name="Step" dataType="Integer" defaultValue="1"/>
+							<columns>
+								<column name="NFeaturesID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="Minimum" dataType="Integer" defaultValue="1"/>
+								<column name="Maximum" dataType="Integer" defaultValue="10"/>
+								<column name="Step" dataType="Integer" defaultValue="1"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -68,11 +70,13 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="MaxDepth" isSingleRow="True">
-							<column name="MaxDepthID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="Minimum" dataType="Integer" defaultValue="2"/>
-							<column name="Maximum" dataType="Integer" defaultValue="20"/>
-							<column name="Step" dataType="Integer" defaultValue="3"/>
+							<columns>
+								<column name="MaxDepthID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="Minimum" dataType="Integer" defaultValue="2"/>
+								<column name="Maximum" dataType="Integer" defaultValue="20"/>
+								<column name="Step" dataType="Integer" defaultValue="3"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -83,9 +87,11 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="TuningIterations" isSingleRow="True">
-							<column name="TuningIterationsID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="nIterations" displayName="Number of Iterations" dataType="Integer" defaultValue="25"/>
+							<columns>
+								<column name="TuningIterationsID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="nIterations" displayName="Number of Iterations" dataType="Integer" defaultValue="25"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -96,9 +102,11 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="TrainTestSplit" isSingleRow="True">
-							<column name="TrainTestSplitID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="TestProp" displayName="Test Proportion" dataType="Double"/>
+							<columns>
+								<column name="TrainTestSplitID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="TestProp" displayName="Test Proportion" dataType="Double"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -108,10 +116,12 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="Outputs">
-							<column name="OutputsID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="yPred" displayName="Predicted Y Values" dataType="Integer"/>
-							<column name="yTest" displayName="True Y Values" dataType="Integer"/>
+							<columns>
+								<column name="OutputsID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="yPred" displayName="Predicted Y Values" dataType="Integer"/>
+								<column name="yTest" displayName="True Y Values" dataType="Integer"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -122,27 +132,29 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="ModelPerformanceOverall" isSingleRow="True">
-							<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="Accuracy" displayName="Macro Accuracy" dataType="Double"/>
-							<column name="MacroPrecision" displayName="Macro Precision" dataType="Double"/>
-							<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
-							<column name="MacroRecall" displayName="Macro Recall" dataType="Double"/>
-							<column name="WeightedRecall" displayName="Weighted Recall" dataType="Double"/>
-							<column name="MacroF1" displayName="Macro F1-score" dataType="Double"/>
-							<column name="WeightedF1" displayName="Weighted F1-score" dataType="Double"/>
-							<column
-								name="ConfusionMatrix"
-								displayName="Confusion Matrix"
-								dataType="String"
-								isExternalFile="True"
-								isRaster="True"
-								bandColumn="Band"/>
-							<column
-								name="Band"
-								dataType="Integer"
-								allowDbNull="True"
-								isOptional="True"/>
+							<columns>
+								<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="Accuracy" displayName="Macro Accuracy" dataType="Double"/>
+								<column name="MacroPrecision" displayName="Macro Precision" dataType="Double"/>
+								<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
+								<column name="MacroRecall" displayName="Macro Recall" dataType="Double"/>
+								<column name="WeightedRecall" displayName="Weighted Recall" dataType="Double"/>
+								<column name="MacroF1" displayName="Macro F1-score" dataType="Double"/>
+								<column name="WeightedF1" displayName="Weighted F1-score" dataType="Double"/>
+								<column
+									name="ConfusionMatrix"
+									displayName="Confusion Matrix"
+									dataType="String"
+									isExternalFile="True"
+									isRaster="True"
+									bandColumn="Band"/>
+								<column
+									name="Band"
+									dataType="Integer"
+									allowDbNull="True"
+									isOptional="True"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -153,13 +165,15 @@
 					dataScope="Scenario">
 					<datasheets>
 						<datasheet name="ModelPerformanceIndividual">
-							<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
-							<column name="ScenarioID" dataType="Integer"/>
-							<column name="TargetValue" displayName="Target Value"/>
-							<column name="Precision" dataType="Double"/>
-							<column name="Recall" dataType="Double"/>
-							<column name="F1-score" dataType="Double"/>
-							<column name="Support" dataType="Integer"/>
+							<columns>
+								<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
+								<column name="ScenarioID" dataType="Integer"/>
+								<column name="TargetValue" displayName="Target Value"/>
+								<column name="Precision" dataType="Double"/>
+								<column name="Recall" dataType="Double"/>
+								<column name="F1-score" dataType="Double"/>
+								<column name="Support" dataType="Integer"/>
+							</columns>
 						</datasheet>
 					</datasheets>
 				</datafeed>
@@ -198,4 +212,33 @@
 		</transformer>
 		
 	</transformers>
+	<layouts>
+		
+		<!--Library Datafeeds Layout-->
+		<layout name="coreforms_LibraryDatafeeds">
+			<item name="core_Pyconfig"/>
+		</layout>
+		
+		<!--Scenario Datafeeds Layout-->
+		<layout name="coreforms_ScenarioDatafeeds">
+			<item name="core_Pipeline"/>
+			<item name="InputData" displayName="Input Data"/>
+			<group name="Hyperparameters">
+				<item name="RFNEstimators" displayName="Number of Estimators"/>
+				<item name="RFNFeatures" displayName="Number of Features"/>
+				<item name="RFMaxDepth" displayName="Max Depth"/>
+			</group>
+			<group name="Optimization" displayName="Optimization Parameters">
+				<item name="RandomSearchIters" displayName="Number of Iterations"/>
+				<item name="TrainTestSplit" displayName="Test Proportion"/>
+			</group>
+			<item name="Outputs"/>
+			<group name="ModelPerformance" displayName="Model Performance">
+				<item name="ModelPerformanceOverall" displayName="Model Performance Overall"/>
+				<item name="ModelPerformanceIndividual" displayName="Model Performance Individual"/>
+			</group>
+			
+		</layout>
+		
+	</layouts>
 </package>
