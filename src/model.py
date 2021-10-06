@@ -97,7 +97,7 @@ model_report = pd.DataFrame(
 
 # Save the individual model performance to a SyncroSim Datasheet
 individual_report = model_report.iloc[:-3].reset_index()
-individual_report.columns = ["TargetValue", "Precision", "Recall", "F1-Score",
+individual_report.columns = ["TargetValue", "Precision", "Recall", "F1score",
                              "Support"]
 my_scenario.save_datasheet(name="ModelPerformanceIndividual", 
                            data=individual_report)

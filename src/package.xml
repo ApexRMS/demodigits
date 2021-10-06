@@ -140,8 +140,8 @@
 								<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
 								<column name="MacroRecall" displayName="Macro Recall" dataType="Double"/>
 								<column name="WeightedRecall" displayName="Weighted Recall" dataType="Double"/>
-								<column name="MacroF1" displayName="Macro F1-score" dataType="Double"/>
-								<column name="WeightedF1" displayName="Weighted F1-score" dataType="Double"/>
+								<column name="MacroF1" displayName="Macro F1 score" dataType="Double"/>
+								<column name="WeightedF1" displayName="Weighted F1 score" dataType="Double"/>
 								<column
 									name="ConfusionMatrix"
 									displayName="Confusion Matrix"
@@ -168,10 +168,10 @@
 							<columns>
 								<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
 								<column name="ScenarioID" dataType="Integer"/>
-								<column name="TargetValue" displayName="Target Value"/>
+								<column name="TargetValue" displayName="Target Value" dataType="Integer"/>
 								<column name="Precision" dataType="Double"/>
 								<column name="Recall" dataType="Double"/>
-								<column name="F1-score" dataType="Double"/>
+								<column name="F1score" displayName="F1 score" dataType="Double"/>
 								<column name="Support" dataType="Integer"/>
 							</columns>
 						</datasheet>
@@ -203,7 +203,7 @@
 				<datafeed name="RFNEstimators" type="Input"/>
 				<datafeed name="RFNFeatures" type="Input"/>
 				<datafeed name="RFMaxDepth" type="Input"/>
-				<datafeed name="RandomSearchIters" type="Input"/>
+				<datafeed name="TuningIterations" type="Input"/>
 				<datafeed name="TrainTestSplit" type="Input"/>
 				<datafeed name="Outputs" type="Output"/>
 				<datafeed name="ModelPerformanceOverall" type="Output"/>
@@ -229,7 +229,7 @@
 				<item name="RFMaxDepth" displayName="Max Depth"/>
 			</group>
 			<group name="Optimization" displayName="Optimization Parameters">
-				<item name="RandomSearchIters" displayName="Number of Iterations"/>
+				<item name="TuningIterations" displayName="Number of Iterations"/>
 				<item name="TrainTestSplit" displayName="Test Proportion"/>
 			</group>
 			<item name="Outputs"/>
