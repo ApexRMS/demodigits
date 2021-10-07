@@ -32,13 +32,12 @@
 									isVisible="False"/>
 								<column
 									name="MaximumIteration"
-									displayName="Number of Iterations"
+									displayName="Iteration"
 									dataType="Integer"
 									defaultValue="1"
 									validationType="WholeNumber"
 									validationCondition="GreaterEqual"
-									formula1="1"
-									isVisible="False"/>
+									formula1="1"/>
 								<column
 									name="MinimumTimestep"
 									displayName="Minimum Timestep"
@@ -46,17 +45,15 @@
 									defaultValue="0"
 									validationType="WholeNumber"
 									validationCondition="GreaterEqual"
-									formula1="0"
-									isVisible="False"/>
+									formula1="0"/>
 								<column
 									name="MaximumTimestep"
-									displayName="Maximum Timestep"
+									displayName="Timestep"
 									dataType="Integer"
-									defaultValue="0"
+									defaultValue="1"
 									validationType="WholeNumber"
 									validationCondition="GreaterEqual"
-									formula1="0"
-									isVisible="False"/>
+									formula1="0"/>
 							</columns>
 						</datasheet>
 					</datasheets>
@@ -183,6 +180,8 @@
 							<columns>
 								<column name="ModelPerformanceOverallID" dataType="Integer" isPrimary="True"/>
 								<column name="ScenarioID" dataType="Integer"/>
+								<column name="Iteration" dataType="Integer" defaultValue="1" isVisible="False"/>
+								<column name="Timestep" dataType="Integer" defaultValue="1" isVisible="False"/>
 								<column name="Accuracy" displayName="Accuracy" dataType="Double"/>
 								<column name="MacroPrecision" displayName="Macro Precision" dataType="Double"/>
 								<column name="WeightedPrecision" displayName="Weighted Precision" dataType="Double"/>
@@ -250,6 +249,7 @@
 			programArguments="model.py"
 			configurationSheet="RunControl">
 			<pipeline>
+				<datafeed name="RunControl" type="Input"/>
 				<datafeed name="InputData" type="Input"/>
 				<datafeed name="RFNEstimators" type="Input"/>
 				<datafeed name="RFNFeatures" type="Input"/>
@@ -277,8 +277,10 @@
 		
 		<!--Scenario Datafeeds Layout-->
 		<layout name="coreforms_ScenarioDatafeeds">
-			<item name="core_Pipeline"/>
-			<item name="InputData" displayName="Input Data"/>
+			<group name="RunSettings" displayName="Run Settings">
+				<item name="RunControl" displayName="General"/>
+				<item name="core_Pipeline"/>
+			</group>
 			<group name="Hyperparameters">
 				<item name="RFNEstimators" displayName="Number of Estimators"/>
 				<item name="RFNFeatures" displayName="Number of Features"/>
@@ -288,6 +290,7 @@
 				<item name="TuningIterations" displayName="Number of Iterations"/>
 				<item name="TrainTestSplit" displayName="Test Proportion"/>
 			</group>
+			<item name="InputData" displayName="Input Data"/>
 			<item name="Outputs"/>
 			<group name="ModelPerformance" displayName="Model Performance">
 				<item name="ModelPerformanceOverall" displayName="Model Performance Overall"/>
@@ -301,7 +304,7 @@
 			<item 
 				name="ConfusionMatrix" 
 				displayName="Confusion Matrix" 
-				dataSheet="ModelPerformanceOVerall" 
+				dataSheet="ModelPerformanceOverall" 
 				column="ConfusionMatrix"/>
 		</layout>
 		

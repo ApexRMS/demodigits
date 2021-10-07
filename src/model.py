@@ -23,6 +23,7 @@ from sklearn import metrics
 my_scenario = ps.Scenario()
 env = ps.environment._environment()
 temp_dir = ps.environment.runtime_temp_folder("tifs")
+cm_dir = ps.environment.runtime_temp_folder("cm")
 
 # Load data from SyncroSim
 input_data = my_scenario.datasheets(name="InputData")
@@ -113,27 +114,31 @@ overall_performance.loc[0] = np.nan
 overall_report = model_report.iloc[-3:]
 overall_performance.Accuracy = np.round(overall_report.loc["accuracy"][0], 3)
 overall_performance.MacroPrecision = np.round(
-    overall_report.loc["macro avg", "precision"])
+    overall_report.loc["macro avg", "precision"], 3)
 overall_performance.WeightedPrecision = np.round(
-    overall_report.loc["weighted avg", "precision"])
+    overall_report.loc["weighted avg", "precision"], 3)
 overall_performance.MacroRecall = np.round(
-    overall_report.loc["macro avg", "recall"])
+    overall_report.loc["macro avg", "recall"], 3)
 overall_performance.WeightedRecall = np.round(
-    overall_report.loc["weighted avg", "recall"])
+    overall_report.loc["weighted avg", "recall"], 3)
 overall_performance.MacroF1 = np.round(
-    overall_report.loc["macro avg", "f1-score"])
-overall_performance.WeightedF1= np.round(
-    overall_report.loc["weighted avg", "f1-score"])
+    overall_report.loc["macro avg", "f1-score"], 3)
+overall_performance.WeightedF1 = np.round(
+    overall_report.loc["weighted avg", "f1-score"], 3)
+
+# Set timesteps and iteration so that confusion matrix can be plotted
+overall_performance.Iteration = 1
+overall_performance.Timestep = 1
 
 # Generate a confusion matrix as a heatmap raster and save as an external file
 cm = metrics.confusion_matrix(y_test, y_pred)
-with rasterio.open(os.path.join(env.temp_directory.item(), "confusion_matrix.tif"),
+with rasterio.open(os.path.join(cm_dir, "confusion_matrix.tif"),
                    mode="w", driver="GTiff", width=cm.shape[0],
                    height=cm.shape[1], count=1, 
                    dtype=np.int32) as infile:
     infile.write(cm, indexes=1)
 
-overall_performance.ConfusionMatrix = os.path.join(env.temp_directory.item(),
+overall_performance.ConfusionMatrix = os.path.join(cm_dir,
                                                    "confusion_matrix.tif")
 
 # Save overall model performance Datasheet

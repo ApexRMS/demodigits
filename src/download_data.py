@@ -12,15 +12,15 @@ import io
 
 # Get environment
 env = ps.environment._environment()
+transfer_dir = env.transfer_directory.item()
 temp_dir = ps.environment.runtime_temp_folder("tifs")
-#temp_dir = os.path.join(env.temp_directory.item(), "tifs")
 
 # Get the Scenario that is currently being run
 my_scenario = ps.Scenario()
 
 # Download TIF files and extract
 url = "https://raw.github.com/ApexRMS/demodigits/main/data.tar.gz"
-data = "data.tar.gz"
+data = os.path.join(transfer_dir, "data.tar.gz")
 request = requests.get(url, stream=True)
 
 with open(data, "wb") as f:
@@ -30,9 +30,6 @@ with open(data, "wb") as f:
 url = "https://raw.github.com/ApexRMS/demodigits/main/target.csv"
 request = requests.get(url)
 target = pd.read_csv(io.StringIO(request.content.decode('utf-8')))
-
-# for testing, delete later:
-# transfer_dir = tempfile.mkdtemp()
 
 # Initialize X, y 
 X = []
